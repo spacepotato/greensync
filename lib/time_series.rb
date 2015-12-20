@@ -3,7 +3,7 @@
 class TimeSeries
 
   def initialize
-    @data = []
+    @data = {}
   end
 
   def empty?
@@ -13,13 +13,15 @@ class TimeSeries
   def first_timestamp
     return nil if empty?
 
-    @data.map(&:first).min
+    #returns a key, value paid
+    @data.min_by{|k, v| k}.first
   end
 
   def last_timestamp
     return nil if empty?
 
-    @data.map(&:first).max
+    #returns a key, value pair
+    @data.max_by{|k, v| k}.first
   end
 
   def [](timestamp)
@@ -38,15 +40,17 @@ class TimeSeries
 
     unless value.nil?
       # insert in place if already there
-      @data.each do |pair|
-        if pair.first == timestamp
-          pair[1] = value
-          return value
-        end
-      end
+      # @data.each do |pair|
+      #   if pair.first == timestamp
+      #     pair[1] = value
+      #     return value
+      #   end
+      # end
 
-      # otherwise, add to end
-      @data << [timestamp, value]
+      # # otherwise, add to end
+      # @data << [timestamp, value]
+      @data[timestamp] = value
+
       return value
     else
       @data.delete_if { |existing_timestamp, _| timestamp == existing_timestamp }
