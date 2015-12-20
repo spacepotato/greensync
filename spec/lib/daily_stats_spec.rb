@@ -142,8 +142,8 @@ describe DailyStats do
     it "should return the correct days and data" do
       expect(subject).to eq(
         [
-          [Time.utc(2014, 3, 12,  0,  0), 12, 775, 226],
-          [Time.utc(2014, 3, 13,  0,  0), 11, 999, 228],
+          ["day", Time.utc(2014, 3, 12,  0,  0), 12, 775, 226],
+          ["day", Time.utc(2014, 3, 13,  0,  0), 11, 999, 228],
         ]
       )
     end

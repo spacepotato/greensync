@@ -4,6 +4,7 @@ class DailyStats
 
   def initialize(time_series)
     @time_series = time_series
+    @period = "day"
   end
 
   def values(midnight)
@@ -22,7 +23,7 @@ class DailyStats
     midnight = @time_series.first_timestamp - 30 * 60
 
     while midnight < @time_series.last_timestamp
-      yield midnight, *min_max_avg(midnight)
+      yield @period, midnight, *min_max_avg(midnight)
       midnight += 24 * 60 * 60
     end
   end
