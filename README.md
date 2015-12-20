@@ -19,7 +19,10 @@
    inefficiencies in the processing of data. I initially experimented with adjusting the existing methods in time_series to improve
    efficiency, but these adjustments made only minor differences to the runtime speed. This was when I made the major decision to make the trade-off
    between space and time shift in favour of time. My implementation of a large hash structure of the form:
-    Hash[year][:months][month][:days][day] (where year, month and day are variables corresponding to the date in question)
+   ```
+    Hash[year][:months][month][:days][day]
+   ```
+   (where year, month and day are variables corresponding to the date in question)
    saw huge speed improvements as we have effectively swapped to an O(n) insert and O(1) output to CSV. While you could argue that it is important to balance
    space and time as much as possible, I feel that in this project, memory will rarely be an issue while speed is listed as being a high priority. 
 
@@ -30,7 +33,11 @@
 3. This was another easy task that simply required adding a period attribute to the CSV file and then appending "day" to each row pushed to the CSV file
 
 4. The Hash that I talked about in (2) is the final format of the Hash, which was heavily influenced by the requirements of this task. For each year and month, I stored
-   the values that needed to be outputted (eg: Hash[2015] => {min: 12, max: 200, sum: 1200, count: 5, months: {}}) which made it quite simple to actually output the data. 
+   the values that needed to be outputted:
+   ```
+   Hash[2015] => {min: 12, max: 200, sum: 1200, count: 5, months: {}} 
+   ```
+   which made it quite simple to actually output the data. 
 
 5. Unfortunately I didn't have enough time to complete this part of the project (I capped myself at ~2:30 hours) as it took me a little bit longer than it should have to determine
    the final structure for the Hash. If I had the time I would have implemented this part of the project by adding an additional hash that would store {timestamp => value} thus allowing us 
