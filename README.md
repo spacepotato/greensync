@@ -1,5 +1,39 @@
 # GreenSync Coding Exercise
 
+## My Notes
+
+(Notes are broken down into bulleted list to line up with individual tasks)
+
+1. This task was quite simple, and only required changing the year to 2013 in the fetch-data script.
+   This could be extended by taking in an argument which is the year that you want to fetch data for, 
+   eg: year = ARGV[0] 
+   But as it was such a minor part of the task I settled for simply hard-coding the year
+
+2. This was the hardest part of the task I found and I completed it in two sections. I first attempted
+   to improve the performance of actually fetching the data. It took me a while, but the real a-ha moment was
+   realising that the original method of fetching was inefficient due to the need to check every existing element of the
+   array upon inserting new data. Realising that this functionality would be much better suited to a hash I made the decision 
+   to change the underlying data structure, which saw a decent increase in the loading of data. 
+
+   My initial hash was a simple replacement of the 2d array, eg Hash[timestamp] = value. But this still left us subject to the
+   inefficiencies in the processing of data. I initially experimented with adjusting the existing methods in time_series to improve
+   efficiency, but these adjustments made only minor differences to the runtime speed. This was when I made the major decision to make the trade-off
+   between space and time shift in favour of time. My implementation of a large hash structure of the form:
+    Hash[year][:months][month][:days][day] (where year, month and day are variables corresponding to the date in question)
+   saw huge speed improvements as we have effectively swapped to an O(n) insert and O(1) output to CSV. While you could argue that it is important to balance
+   space and time as much as possible, I feel that in this project, memory will rarely be an issue while speed is listed as being a high priority. 
+
+   The change to a hash structure also required me to remove quite a few methods that were no longer required (eg We no longer needed to get last_timestamp as we
+   pre-processed the data) and due to this I also reduced the number of tests. That being said, the code coverage of tests was still %92, with the only omittance being
+   DataLoader#load_series
+
+3. This was another easy task that simply required adding a period attribute to the CSV file and then appending "day" to each row pushed to the CSV file
+
+4. The Hash that I talked about in (2) is the final format of the Hash, which was heavily influenced by the requirements of this task. For each year and month, I stored
+   the values that needed to be outputted (eg: Hash[2015] => {min: 12, max: 200, sum: 1200, count: 5, months: {}}) which made it quite simple to actually output the data. 
+
+5. Unfortunately I didn't have enough time to complete this part of the project (I capped myself at ~2:30 hours)
+
 ## Background
 
 Greentastic Electricity Supply Concern is looking to expand into retail electricity price

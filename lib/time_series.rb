@@ -39,15 +39,15 @@ class TimeSeries
       day = timestamp.day
 
       if !@data.has_key?(year)
-        @data[year] = {min: nil, max: nil, count: 0, sum: 0, median: nil, deviation: nil, variance: nil, months: {}}
+        @data[year] = {min: nil, max: nil, count: 0, sum: 0, months: {}}
       end
 
       if !@data[year][:months].has_key?(month)
-        @data[year][:months][month] = {min: nil, max: nil, count: 0, sum: 0, median: nil, deviation: nil, variance: nil, days: {}}
+        @data[year][:months][month] = {min: nil, max: nil, count: 0, sum: 0, days: {}}
       end
 
       if !@data[year][:months][month][:days].has_key?(day)
-        @data[year][:months][month][:days][day] = {min: nil, max: nil, count: 0, sum: 0, median: nil, deviation: nil, variance: nil}
+        @data[year][:months][month][:days][day] = {min: nil, max: nil, count: 0, sum: 0}
       end
 
       stat_hashes = []
