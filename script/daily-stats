@@ -16,5 +16,5 @@ end
 output << %w(period date min_rrp max_rrp average_rrp)
 
 stats.each do |period, midnight, min, max, average|
-  output << [format_midnight(midnight), min, max, average]
+  output << [period, midnight, min, max, average]
 end

@@ -114,23 +114,6 @@ describe DailyStats do
   end
 
   let(:stats) { DailyStats.new(series) }
-  let(:midnight) { Time.utc(2014, 3, 12,  0,  0) }
-
-  describe "#values" do
-    subject { stats.values(midnight) }
-
-    it "should return the 48 points from that day" do
-      expect(subject).to eq([123, 12, 123, 123, 123, 123, 567, 123, 123, 144, 123, 123, 123, 600, 123, 123, 123, 577, 698, 123, 123, 123, 123, 435, 123, 123, 766, 123, 123, 123, 123,  45, 123, 123, 123, 453, 123, 345, 123, 775, 123, 675, 123, 123, 123, 555, 123, 122])
-    end
-  end
-
-  describe "#min_max_avg" do
-    subject { stats.min_max_avg(midnight) }
-
-    it "should return the 48 points from that day" do
-      expect(subject).to eq([12, 775, 226])
-    end
-  end
 
   describe "#each" do
     subject do
@@ -141,9 +124,11 @@ describe DailyStats do
 
     it "should return the correct days and data" do
       expect(subject).to eq(
-        [
-          ["day", Time.utc(2014, 3, 12,  0,  0), 12, 775, 226],
-          ["day", Time.utc(2014, 3, 13,  0,  0), 11, 999, 228],
+        [ 
+          ["year", "2014", 11, 999, 227],
+          ["month", "2014-03", 11, 999, 227],
+          ["day", "2014-03-12", 12, 775, 226],
+          ["day", "2014-03-13", 11, 999, 228],
         ]
       )
     end

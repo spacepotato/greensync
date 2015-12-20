@@ -6,32 +6,22 @@ class TimeSeries
     @data = {}
   end
 
+  def data
+    if !@data.empty?
+      return @data
+    else 
+      return nil
+    end
+  end
+
   def empty?
     @data.empty?
-  end
-
-  def first_timestamp
-    return nil if empty?
-
-    #returns a key, value paid
-    @data.min_by{|k, v| k}.first
-  end
-
-  def last_timestamp
-    return nil if empty?
-
-    #returns a key, value pair
-    @data.max_by{|k, v| k}.first
   end
 
   def [](timestamp)
     return nil if empty?
 
-    @data.each do |existing_timestamp, value|
-      return value if existing_timestamp == timestamp
-    end
-
-    nil
+    return @data[timestamp.year][:months][timestamp.month][:days][timestamp.day] rescue nil
   end
 
   def []=(timestamp, value)
@@ -39,22 +29,52 @@ class TimeSeries
     raise "timestamp must be UTC" unless timestamp.utc?
 
     unless value.nil?
-      # insert in place if already there
-      # @data.each do |pair|
-      #   if pair.first == timestamp
-      #     pair[1] = value
-      #     return value
-      #   end
-      # end
+      #Because we consider 00:00 to belong to the previous day
+      if timestamp.strftime("%H:%M") == "00:00"
+        timestamp -= 60
+      end
 
-      # # otherwise, add to end
-      # @data << [timestamp, value]
-      @data[timestamp] = value
+      year = timestamp.year
+      month = timestamp.month
+      day = timestamp.day
+
+      if !@data.has_key?(year)
+        @data[year] = {min: nil, max: nil, count: 0, sum: 0, median: nil, deviation: nil, variance: nil, months: {}}
+      end
+
+      if !@data[year][:months].has_key?(month)
+        @data[year][:months][month] = {min: nil, max: nil, count: 0, sum: 0, median: nil, deviation: nil, variance: nil, days: {}}
+      end
+
+      if !@data[year][:months][month][:days].has_key?(day)
+        @data[year][:months][month][:days][day] = {min: nil, max: nil, count: 0, sum: 0, median: nil, deviation: nil, variance: nil}
+      end
+
+      stat_hashes = []
+
+      #Yearly Stats
+      stat_hashes.push(@data[year])
+
+      #Monthly Stats
+      stat_hashes.push(@data[year][:months][month])
+
+      #Daily Stats
+      stat_hashes.push(@data[year][:months][month][:days][day])
+
+      stat_hashes.each do |update_hash|
+        if update_hash[:min].nil? || value < update_hash[:min]
+          update_hash[:min] = value
+        end
+
+        if update_hash[:max].nil? || value > update_hash[:max]
+          update_hash[:max] = value
+        end
+
+        update_hash[:count] += 1
+        update_hash[:sum] += value
+      end
 
       return value
-    else
-      @data.delete_if { |existing_timestamp, _| timestamp == existing_timestamp }
-      return nil
     end
   end
 
