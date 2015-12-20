@@ -32,7 +32,12 @@
 4. The Hash that I talked about in (2) is the final format of the Hash, which was heavily influenced by the requirements of this task. For each year and month, I stored
    the values that needed to be outputted (eg: Hash[2015] => {min: 12, max: 200, sum: 1200, count: 5, months: {}}) which made it quite simple to actually output the data. 
 
-5. Unfortunately I didn't have enough time to complete this part of the project (I capped myself at ~2:30 hours)
+5. Unfortunately I didn't have enough time to complete this part of the project (I capped myself at ~2:30 hours) as it took me a little bit longer than it should have to determine
+   the final structure for the Hash. If I had the time I would have implemented this part of the project by adding an additional hash that would store {timestamp => value} thus allowing us 
+   to calculate the median, variance and std. deviation. 
+
+As well as (5) had I had more time I would have spent a bit of time refactoring TimeSeries as the name is no longer particularly indicitive of its purpose. I would also change how I was handling
+the 00:00 timestamp as I felt that my solution was a bit hacky due to time constraints. 
 
 ## Background
 
